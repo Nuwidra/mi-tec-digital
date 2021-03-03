@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="CR"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/jonathan/Escritorio/mi-tec-digital/target/surefire/surefirebooter18147384785981498271.jar /home/jonathan/Escritorio/mi-tec-digital/target/surefire 2021-03-02T12-00-04_589-jvmRun1 surefire9135488343062035144tmp surefire_011179755790454910936tmp"/>
+    <property name="sun.java.command" value="/home/jonathan/Escritorio/mi-tec-digital/target/surefire/surefirebooter11849748642071018797.jar /home/jonathan/Escritorio/mi-tec-digital/target/surefire 2021-03-02T20-05-06_792-jvmRun1 surefire10416125411823836355tmp surefire_08363095238505183748tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/jonathan/Escritorio/mi-tec-digital/target/test-classes:/home/jonathan/Escritorio/mi-tec-digital/target/classes:/home/jonathan/.m2/repository/commons-cli/commons-cli/1.4/commons-cli-1.4.jar:/home/jonathan/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.7.1/junit-jupiter-api-5.7.1.jar:/home/jonathan/.m2/repository/org/apiguardian/apiguardian-api/1.1.0/apiguardian-api-1.1.0.jar:/home/jonathan/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/jonathan/.m2/repository/org/junit/platform/junit-platform-commons/1.7.1/junit-platform-commons-1.7.1.jar:/home/jonathan/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.7.1/junit-jupiter-engine-5.7.1.jar:/home/jonathan/.m2/repository/org/junit/platform/junit-platform-engine/1.7.1/junit-platform-engine-1.7.1.jar:/home/jonathan/.m2/repository/org/assertj/assertj-core/3.19.0/assertj-core-3.19.0.jar:/home/jonathan/.m2/repository/org/mockito/mockito-core/3.8.0/mockito-core-3.8.0.jar:/home/jonathan/.m2/repository/net/bytebuddy/byte-buddy/1.10.20/byte-buddy-1.10.20.jar:/home/jonathan/.m2/repository/net/bytebuddy/byte-buddy-agent/1.10.20/byte-buddy-agent-1.10.20.jar:/home/jonathan/.m2/repository/org/objenesis/objenesis/3.1/objenesis-3.1.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -32,7 +32,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/home/jonathan/Escritorio/mi-tec-digital/target/surefire/surefirebooter18147384785981498271.jar"/>
+    <property name="surefire.real.class.path" value="/home/jonathan/Escritorio/mi-tec-digital/target/surefire/surefirebooter11849748642071018797.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.10+9-Ubuntu-0ubuntu1.20.04"/>
     <property name="user.name" value="jonathan"/>

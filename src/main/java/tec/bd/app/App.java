@@ -516,7 +516,7 @@ public class App  {
     }
 
     public static void showByCity(ProfesorService profesorService, String ciudad){
-        List<Profesor> profesores = profesorService.getStudentsByCity(ciudad);
+        List<Profesor> profesores = profesorService.getProfessorByCity(ciudad);
 
         if(profesores.isEmpty()){
             System.out.println("La ciudad: " + ciudad + " no existe ");

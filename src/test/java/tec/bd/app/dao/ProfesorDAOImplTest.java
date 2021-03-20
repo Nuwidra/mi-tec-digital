@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProfesorDAOImplTest {
 
-    private EstudianteDAOImpl estudianteDAO;
+    private ProfesorDAOImpl profesorDAO;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -25,91 +25,91 @@ public class ProfesorDAOImplTest {
         var juanId = new RowAttribute("id", 1);
         var juanNombre = new RowAttribute("nombre", "Juan");
         var juanApellido = new RowAttribute("apellido", "Perez");
-        var juanEdad = new RowAttribute("edad", 20);
+        var juanEdad = new RowAttribute("cuidad", "Quito");
         var juanRow = new Row(new RowAttribute[]{ juanId, juanNombre, juanApellido, juanEdad });
 
         var mariaId = new RowAttribute("id", 3);
         var mariaNombre = new RowAttribute("nombre", "Maria");
         var mariaApellido = new RowAttribute("apellido", "Rojas");
-        var mariaEdad = new RowAttribute("edad", 21);
+        var mariaEdad = new RowAttribute("cuidad", "Curtua");
         var mariaRow = new Row(new RowAttribute[]{ mariaId, mariaNombre, mariaApellido, mariaEdad });
 
         var pedroId = new RowAttribute("id", 2);
         var pedroNombre = new RowAttribute("nombre", "Pedro");
         var pedroApellido = new RowAttribute("apellido", "Infante");
-        var pedroEdad = new RowAttribute("edad", 23);
+        var pedroEdad = new RowAttribute("cuidad", "Cuarla");
         var pedroRow = new Row(new RowAttribute[]{ pedroId, pedroNombre, pedroApellido, pedroEdad });
 
         var tables = new HashMap<Class<? extends Entity>, Set<Row>>();
-        tables.put(Estudiante.class, new HashSet<>() {{
+        tables.put(Profesor.class, new HashSet<>() {{
             add(juanRow);
             add(mariaRow);
             add(pedroRow);
         }});
         var setDB = new SetDB(tables);
-        this.estudianteDAO = new EstudianteDAOImpl(setDB, Estudiante.class);
+        this.profesorDAO = new ProfesorDAOImpl(setDB, Profesor.class);
     }
 
     @Test
     public void orderByLastName() throws Exception {
 
-        var estudiantes = this.estudianteDAO.findAll();
-        Comparator<Estudiante> comparator
+        var profesores = this.profesorDAO.findAll();
+        Comparator<Profesor> comparator
                 = (e1, e2) -> e1.getApellido().compareTo(e2.getApellido());
 
-        estudiantes.stream().forEach(e -> System.out.println(e.getNombre() +" "+e.getApellido()));
+        profesores.stream().forEach(e -> System.out.println(e.getNombre() +" "+e.getApellido()));
 
-        estudiantes.sort(comparator);
+        profesores.sort(comparator);
 
         System.out.println("-----------------------------------------");
 
-        estudiantes.stream().forEach(e -> System.out.println(e.getNombre() +" "+e.getApellido()));
+        profesores.stream().forEach(e -> System.out.println(e.getNombre() +" "+e.getApellido()));
 
     }
 
     @Test
     public void findAll() throws Exception {
-        var actual = this.estudianteDAO.findAll();
+        var actual = this.profesorDAO.findAll();
         assertThat(actual).hasSize(3);
     }
 
     @Test
     public void findById() throws Exception {
-        var student = this.estudianteDAO.findById(3);
-        assertThat(student.get().getCarne()).isEqualTo(3);
+        var student = this.profesorDAO.findById(3);
+        assertThat(student.get().getId()).isEqualTo(3);
         assertThat(student.get().getNombre()).isEqualTo("Maria");
         assertThat(student.get().getApellido()).isEqualTo("Rojas");
-        assertThat(student.get().getEdad()).isEqualTo(21);
+        assertThat(student.get().getCiudad()).isEqualTo("Curtua");
     }
 
-    @Test
-    public void save() throws Exception {
-        this.estudianteDAO.save(new Estudiante(40, "Jorge", "Chacon", 27));
-        var estudiante = this.estudianteDAO.findById(40);
-        assertThat(this.estudianteDAO.findAll()).hasSize(4);
-        assertThat(estudiante.isPresent()).isTrue();
-        assertThat(estudiante.get().getCarne()).isEqualTo(40);
-        assertThat(estudiante.get().getNombre()).isEqualTo("Jorge");
-        assertThat(estudiante.get().getApellido()).isEqualTo("Chacon");
-        assertThat(estudiante.get().getEdad()).isEqualTo(27);
-    }
-
-    @Test
-    public void update() throws Exception {
-        var current = this.estudianteDAO.findById(3);
-        current.get().setApellido("Rodriguez");
-        current.get().setEdad(30);
-        var actual = this.estudianteDAO.update(current.get());
-        assertThat(this.estudianteDAO.findAll()).hasSize(3);
-        assertThat(actual.get().getCarne()).isEqualTo(3);
-        assertThat(actual.get().getNombre()).isEqualTo("Maria");
-        assertThat(actual.get().getApellido()).isEqualTo("Rodriguez");
-        assertThat(actual.get().getEdad()).isEqualTo(30);
-    }
+//    @Test
+//    public void save() throws Exception {
+//        this.profesorDAO.save(new Profesor(40, "Jorge", "Chacon", "B2"));
+//        var profesor = this.profesorDAO.findById(4);
+//        assertThat(this.profesorDAO.findAll()).hasSize(4);
+//        assertThat(profesor.isPresent()).isTrue();
+//        assertThat(profesor.get().getId()).isEqualTo(4);
+//        assertThat(profesor.get().getNombre()).isEqualTo("Jorge");
+//        assertThat(profesor.get().getApellido()).isEqualTo("Chacon");
+//        assertThat(profesor.get().getCiudad()).isEqualTo("B2");
+//    }
+//
+//    @Test
+//    public void update() throws Exception {
+//        var current = this.profesorDAO.findById(3);
+//        current.get().setApellido("Rodriguez");
+//        current.get().setCiudad("Turbia");
+//        var actual = this.profesorDAO.update(current.get());
+//        assertThat(this.profesorDAO.findAll()).hasSize(3);
+//        assertThat(actual.get().getId()).isEqualTo(3);
+//        assertThat(actual.get().getNombre()).isEqualTo("Maria");
+//        assertThat(actual.get().getApellido()).isEqualTo("Guzo");
+//        assertThat(actual.get().getCiudad()).isEqualTo("Turbia");
+//    }
 
     @Test
     public void delete() throws Exception {
-        this.estudianteDAO.delete(2);
-        assertThat(this.estudianteDAO.findAll()).hasSize(2);
+        this.profesorDAO.delete(2);
+        assertThat(this.profesorDAO.findAll()).hasSize(2);
     }
 }

@@ -42,14 +42,12 @@ public class ProfesorServiceImpl implements ProfesorService {
         if(this.profesorDAO.findById(p.getId()).isPresent()){
             return this.profesorDAO.update(p);
         }
-        else{
-            return null;
-        }
+        return Optional.empty();
     }
 
     @Override
     public void deleteProfessor(int id) {
-        Optional<Profesor> profesor = this.profesorDAO.findById(id);
+
         if(this.profesorDAO.findById(id).isPresent()){
             this.profesorDAO.delete(id);
         }
@@ -59,7 +57,7 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
-    public List<Profesor> getStudentsByCity(String city) {
+    public List<Profesor> getProfessorByCity(String city) {
         if (city != null) {
             return this.profesorDAO.findByCity(city);
         } else {

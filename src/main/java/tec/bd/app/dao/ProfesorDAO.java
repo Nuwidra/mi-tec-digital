@@ -15,5 +15,4 @@ public interface ProfesorDAO extends GenericDAO<Profesor, Integer> {
      */
     List<Profesor> findByCity(String city);
 
-
 }

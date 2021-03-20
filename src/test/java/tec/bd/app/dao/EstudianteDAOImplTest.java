@@ -94,4 +94,32 @@ public class EstudianteDAOImplTest {
         this.estudianteDAO.delete(2);
         assertThat(this.estudianteDAO.findAll()).hasSize(2);
     }
+
+    @Test
+    public void findByLastName() throws Exception {
+        var estudiantes = this.estudianteDAO.findByLastName("Rojas");
+        assertThat(estudiantes.get(0).getCarne()).isEqualTo(3);
+        assertThat(estudiantes.get(0).getNombre()).isEqualTo("Maria");
+        assertThat(estudiantes.get(0).getApellido()).isEqualTo("Rojas");
+        assertThat(estudiantes.get(0).getEdad()).isEqualTo(21);
+    }
+
+    @Test
+    public void findAllSortedByLastName() throws Exception {
+        var estudiantes = this.estudianteDAO.findAllSortByLastName();
+        assertThat(estudiantes.get(0).getCarne()).isEqualTo(2);
+        assertThat(estudiantes.get(0).getNombre()).isEqualTo("Pedro");
+        assertThat(estudiantes.get(0).getApellido()).isEqualTo("Infante");
+        assertThat(estudiantes.get(0).getEdad()).isEqualTo(23);
+
+        assertThat(estudiantes.get(1).getCarne()).isEqualTo(1);
+        assertThat(estudiantes.get(1).getNombre()).isEqualTo("Juan");
+        assertThat(estudiantes.get(1).getApellido()).isEqualTo("Perez");
+        assertThat(estudiantes.get(1).getEdad()).isEqualTo(20);
+
+        assertThat(estudiantes.get(2).getCarne()).isEqualTo(3);
+        assertThat(estudiantes.get(2).getNombre()).isEqualTo("Maria");
+        assertThat(estudiantes.get(2).getApellido()).isEqualTo("Rojas");
+        assertThat(estudiantes.get(2).getEdad()).isEqualTo(21);
+    }
 }

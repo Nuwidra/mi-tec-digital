@@ -5,94 +5,104 @@ import org.junit.jupiter.api.Test;
 import tec.bd.app.database.set.Row;
 import tec.bd.app.database.set.RowAttribute;
 import tec.bd.app.database.set.SetDB;
-import tec.bd.app.domain.Curso;
 import tec.bd.app.domain.Entity;
 import tec.bd.app.domain.Profesor;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+
+
 
 public class ProfesorDAOImplTest {
 
-//    private ProfesorDAOImpl profesorDAO;
-//
-//    @BeforeEach
-//    public void setUp() throws Exception {
-//
-//        var mateId = new RowAttribute("id", 1);
-//        var mateNombre = new RowAttribute("nombre", "Matematica");
-//        var mateDepartamento = new RowAttribute("apellido", "Catedra");
-//        var mateCreditos = new RowAttribute("creditos", 3);
-//        var mateRow = new Row(new RowAttribute[]{ mateId, mateNombre, mateDepartamento, mateCreditos });
-//
-//        var cienciasId = new RowAttribute("id", 2);
-//        var cienciasNombre = new RowAttribute("nombre", "Ciencias");
-//        var cienciasDepartamento = new RowAttribute("apellido", "Inventigacion");
-//        var cienciasCreditos = new RowAttribute("creditos", 4);
-//        var cienciasRow = new Row(new RowAttribute[]{ cienciasId, cienciasNombre, cienciasDepartamento, cienciasCreditos });
-//
-//        var socialesId = new RowAttribute("id", 3);
-//        var socialesNombre = new RowAttribute("nombre", "Sociales");
-//        var socialesDepartamento = new RowAttribute("apellido", "Servicio Social");
-//        var socialesCreditos = new RowAttribute("edad", 1);
-//        var socialesRow = new Row(new RowAttribute[]{ socialesId, socialesNombre, socialesDepartamento, socialesCreditos });
-//
-//        var tables = new HashMap<Class<? extends Entity>, Set<Row>>();
-//        tables.put(Profesor.class, new HashSet<>() {{
-//            add(mateRow);
-//            add(cienciasRow);
-//            add(socialesRow);
-//        }});
-//        var setDB = new SetDB(tables);
-//        this.profesorDAO = new ProfesorDAOImpl(setDB, Curso.class);
-//    }
-//
-//    @Test
-//    public void findAll() throws Exception {
-//        var actual = this.profesorDAO.findAll();
-//        assertThat(actual).hasSize(3);
-//    }
-//
-//    @Test
-//    public void findById() throws Exception {
-//        var curso = this.profesorDAO.findById(1);
-//        assertThat(curso.get().getId()).isEqualTo(1);
-//        assertThat(curso.get().getNombre()).isEqualTo("Matematica");
-//        assertThat(curso.get().getDepartamento()).isEqualTo("Catedra");
-//        assertThat(curso.get().getCreditos()).isEqualTo(3);
-//    }
-//
-//    @Test
-//    public void save() throws Exception {
-//        this.profesorDAO.save(new Curso(4, "Musica", "RockStar", 4));
-//        var curso = this.profesorDAO.findById(4);
-//        assertThat(this.profesorDAO.findAll()).hasSize(4);
-//        assertThat(curso.isPresent()).isTrue();
-//        assertThat(curso.get().getId()).isEqualTo(4);
-//        assertThat(curso.get().getNombre()).isEqualTo("Musica");
-//        assertThat(curso.get().getDepartamento()).isEqualTo("RockStar");
-//        assertThat(curso.get().getCreditos()).isEqualTo(4);
-//    }
-//
-//    @Test
-//    public void update() throws Exception {
-//        var current = this.cursoDAO.findById(3);
-//        current.get().setDepartamento("Servicio Social");
-//        current.get().setCreditos(1);
-//        var actual = this.cursoDAO.update(current.get());
-//        assertThat(this.cursoDAO.findAll()).hasSize(3);
-//        assertThat(actual.get().getId()).isEqualTo(3);
-//        assertThat(actual.get().getNombre()).isEqualTo("Sociales");
-//        assertThat(actual.get().getDepartamento()).isEqualTo("Servicio Social");
-//        assertThat(actual.get().getCreditos()).isEqualTo(5);
-//    }
-//
-//    @Test
-//    public void delete() throws Exception {
-//        this.cursoDAO.delete(2);
-//        assertThat(this.cursoDAO.findAll()).hasSize(2);
-//    }
+    private ProfesorDAOImpl profesorDAO;
 
+    @BeforeEach
+    public void setUp() throws Exception {
+
+        var juanId = new RowAttribute("id", 1);
+        var juanNombre = new RowAttribute("nombre", "Juan");
+        var juanApellido = new RowAttribute("apellido", "Solorzano");
+        var juanCiudad = new RowAttribute("ciudad", "Cuacamaranga");
+        var juanRow = new Row(new RowAttribute[]{juanId, juanNombre, juanApellido, juanCiudad});
+
+        var mariaId = new RowAttribute("id", 2);
+        var mariaNombre = new RowAttribute("nombre", "Maria");
+        var mariaApellido = new RowAttribute("apellido", "Gucci");
+        var mariaCiudad = new RowAttribute("ciudad", "Sierra");
+        var mariaRow = new Row(new RowAttribute[]{mariaId, mariaNombre, mariaApellido, mariaCiudad});
+
+        var pedroId = new RowAttribute("id", 3);
+        var pedroNombre = new RowAttribute("nombre", "William");
+        var pedroApellido = new RowAttribute("apellido", "Minerva");
+        var pedroCiudad = new RowAttribute("ciudad", "Bombastic");
+        var pedroRow = new Row(new RowAttribute[]{pedroId, pedroNombre, pedroApellido, pedroCiudad});
+
+        var tables = new HashMap<Class<? extends Entity>, Set<Row>>();
+        tables.put(Profesor.class, new HashSet<>() {{
+            add(juanRow);
+            add(mariaRow);
+            add(pedroRow);
+        }});
+        var setDB = new SetDB(tables);
+        this.profesorDAO = new ProfesorDAOImpl(setDB, Profesor.class);
+    }
+
+    @Test
+    public void findAll() throws Exception {
+        var actual = this.profesorDAO.findAll();
+        assertThat(actual).hasSize(3);
+    }
+
+    @Test
+    public void findById() throws Exception {
+        var profe = this.profesorDAO.findById(3);
+        assertThat(profe.get().getId()).isEqualTo(3);
+        assertThat(profe.get().getNombre()).isEqualTo("William");
+        assertThat(profe.get().getApellido()).isEqualTo("Minerva");
+        assertThat(profe.get().getCiudad()).isEqualTo("Bombastic");
+    }
+
+    @Test
+    public void save() throws Exception {
+        this.profesorDAO.save(new Profesor(40, "Jorge", "Solorzano", "Cuacamaranga"));
+        var profe = this.profesorDAO.findById(40);
+        assertThat(this.profesorDAO.findAll()).hasSize(4);
+        assertThat(profe.isPresent()).isTrue();
+        assertThat(profe.get().getId()).isEqualTo(40);
+        assertThat(profe.get().getNombre()).isEqualTo("Jorge");
+        assertThat(profe.get().getApellido()).isEqualTo("Solorzano");
+        assertThat(profe.get().getCiudad()).isEqualTo("Cuacamaranga");
+    }
+
+    @Test
+    public void update() throws Exception {
+        var current = this.profesorDAO.findById(2);
+        current.get().setApellido("Gucci");
+        current.get().setCiudad("Sierra");
+        var actual = this.profesorDAO.update(current.get());
+        assertThat(this.profesorDAO.findAll()).hasSize(3);
+        assertThat(actual.get().getId()).isEqualTo(2);
+        assertThat(actual.get().getNombre()).isEqualTo("Maria");
+        assertThat(actual.get().getApellido()).isEqualTo("Gucci");
+        assertThat(actual.get().getCiudad()).isEqualTo("Sierra");
+    }
+
+    @Test
+    public void delete() throws Exception {
+        this.profesorDAO.delete(2);
+        assertThat(this.profesorDAO.findAll()).hasSize(2);
+    }
+
+    @Test
+    public void getByCity() throws Exception {
+        var profesores = this.profesorDAO.findByCity("Cuacamaranga");
+        assertThat(profesores.get(0).getId()).isEqualTo(1);
+        assertThat(profesores.get(0).getNombre()).isEqualTo("Juan");
+        assertThat(profesores.get(0).getApellido()).isEqualTo("Solorzano");
+        assertThat(profesores.get(0).getCiudad()).isEqualTo("Cuacamaranga");
+    }
 }

@@ -1,6 +1,4 @@
 Mi-TEC-Digital
 ==============
-Nombre Estudiante: Jonathan Quesada Salas
-Carné:             2020023583
+Nombre del estudiante: Jonathan Quesada Salas/Carnet: 2020023583
 
-Aplicación Demo para gestionar Estudiantes, Profesores y Cursos.

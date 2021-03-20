@@ -26,13 +26,22 @@
       <artifactId>commons-cli</artifactId>
       <version>1.4</version>
     </dependency>
-
-    <!-- Dependencia que se agregó -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.slf4j</groupId>-->
+<!--      <artifactId>slf4j-api</artifactId>-->
+<!--      <version>1.7.29</version>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.slf4j</groupId>-->
+<!--      <artifactId>slf4j-simple</artifactId>-->
+<!--      <version>1.7.29</version>-->
+<!--    </dependency>-->
+
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -58,7 +67,6 @@
       <version>3.8.0</version>
       <scope>test</scope>
     </dependency>
-    <!-- Dependencia que se agregó -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>

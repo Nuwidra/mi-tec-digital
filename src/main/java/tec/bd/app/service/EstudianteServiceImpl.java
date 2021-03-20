@@ -45,7 +45,7 @@ public class EstudianteServiceImpl implements EstudianteService {
     }
 
     public void deleteStudent(int carne) {
-        if(carne == this.estudianteDAO.findById(carne).get().getCarne()){
+        if(this.estudianteDAO.findById(carne).isPresent()){
             this.estudianteDAO.delete(carne);
         }
     }

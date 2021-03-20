@@ -39,7 +39,7 @@ public class ProfesorServiceImpl implements ProfesorService {
 
     @Override
     public Optional<Profesor> updateProfessor(Profesor p) {
-        if(p.getId() == this.profesorDAO.findById(p.getId()).get().getId()){
+        if(this.profesorDAO.findById(p.getId()).isPresent()){
             return this.profesorDAO.update(p);
         }
         else{
@@ -50,7 +50,7 @@ public class ProfesorServiceImpl implements ProfesorService {
     @Override
     public void deleteProfessor(int id) {
         Optional<Profesor> profesor = this.profesorDAO.findById(id);
-        if(id == this.profesorDAO.findById(id).get().getId()){
+        if(this.profesorDAO.findById(id).isPresent()){
             this.profesorDAO.delete(id);
         }
         else{

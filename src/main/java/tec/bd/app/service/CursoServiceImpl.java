@@ -42,17 +42,16 @@ public class CursoServiceImpl implements CursoService{
     @Override
     public Optional<Curso> updateCourse(Curso c) {
 
-        if(c.getId() == this.cursoDAO.findById(c.getId()).get().getId()){
+        if(this.cursoDAO.findById(c.getId()).isPresent()) {
             return this.cursoDAO.update(c);
         }
-        else{
-            return null;
-        }
+        return Optional.empty();
+
     }
 
     @Override
     public void deleteCourse(int id) {
-        if(id == this.cursoDAO.findById(id).get().getId()){
+        if(this.cursoDAO.findById(id).isPresent()) {
             this.cursoDAO.delete(id);
         }
         else{

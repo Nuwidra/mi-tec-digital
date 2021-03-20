@@ -92,6 +92,8 @@ public class EstudianteServiceImplTest {
                 List.of(mock(Estudiante.class), mock(Estudiante.class))
         );
 
+        given(this.estudianteDAO.findById(anyInt())).willReturn(Optional.of(mock(Estudiante.class)));
+
         var studentsBeforeSave = this.estudianteService.getAll();
 
         estudianteService.deleteStudent(2);

@@ -24,20 +24,20 @@ public class CursoDAOImplTest {
 
         var mateId = new RowAttribute("id", 1);
         var mateNombre = new RowAttribute("nombre", "Matematica");
-        var mateDepartamento = new RowAttribute("apellido", "Catedra");
+        var mateDepartamento = new RowAttribute("departamento", "Catedra");
         var mateCreditos = new RowAttribute("creditos", 3);
         var mateRow = new Row(new RowAttribute[]{ mateId, mateNombre, mateDepartamento, mateCreditos });
 
         var cienciasId = new RowAttribute("id", 2);
         var cienciasNombre = new RowAttribute("nombre", "Ciencias");
-        var cienciasDepartamento = new RowAttribute("apellido", "Inventigacion");
+        var cienciasDepartamento = new RowAttribute("departamento", "Inventigacion");
         var cienciasCreditos = new RowAttribute("creditos", 4);
         var cienciasRow = new Row(new RowAttribute[]{ cienciasId, cienciasNombre, cienciasDepartamento, cienciasCreditos });
 
         var socialesId = new RowAttribute("id", 3);
         var socialesNombre = new RowAttribute("nombre", "Sociales");
-        var socialesDepartamento = new RowAttribute("apellido", "Servicio Social");
-        var socialesCreditos = new RowAttribute("edad", 1);
+        var socialesDepartamento = new RowAttribute("departamento", "Servicio Social");
+        var socialesCreditos = new RowAttribute("creditos", 1);
         var socialesRow = new Row(new RowAttribute[]{ socialesId, socialesNombre, socialesDepartamento, socialesCreditos });
 
         var tables = new HashMap<Class<? extends Entity>, Set<Row>>();
@@ -87,7 +87,7 @@ public class CursoDAOImplTest {
         assertThat(actual.get().getId()).isEqualTo(3);
         assertThat(actual.get().getNombre()).isEqualTo("Sociales");
         assertThat(actual.get().getDepartamento()).isEqualTo("Servicio Social");
-        assertThat(actual.get().getCreditos()).isEqualTo(5);
+        assertThat(actual.get().getCreditos()).isEqualTo(1);
     }
 
     @Test

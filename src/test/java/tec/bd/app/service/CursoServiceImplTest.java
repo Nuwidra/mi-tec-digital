@@ -2,21 +2,20 @@ package tec.bd.app.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tec.bd.app.dao.CursoDAO;
-import tec.bd.app.domain.Estudiante;
 import tec.bd.app.domain.Curso;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
+import static org.mockito.BDDMockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class CursoServiceImplTest {
 
     @Mock
@@ -91,6 +90,8 @@ public class CursoServiceImplTest {
                 List.of(mock(Curso.class), mock(Curso.class))
         );
 
+        given(this.cursoDAO.findById(anyInt())).willReturn(Optional.of(mock(Curso.class)));
+
         var studentsBeforeSave = this.cursoService.getAll();
 
         cursoService.deleteCourse(2);
@@ -107,8 +108,9 @@ public class CursoServiceImplTest {
         /*
         En la primera invocacion va a devolver estudiante default y en la segunda invocacion el estudiante actualizado
          */
+        var cursoActual = mock(Curso.class);
         given(this.cursoDAO.findById(anyInt())).willReturn(
-                Optional.of(mock(Curso.class)),
+                Optional.of(cursoActual),
                 Optional.of(mock(Curso.class))
         );
 

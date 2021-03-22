@@ -83,28 +83,28 @@ public class ProfesorServiceImplTest {
         assertThat(studentsAfterSave.size()).isGreaterThan(studentsBeforeSave.size());
     }
 
-    @Test
-    public void deleteStudent() throws Exception {
-
-        /*
-        En la primera invocacion va a devolver una lista de 3 estudiantes. En la segunda una lista de 2
-         */
-        given(this.profesorDAO.findAll()).willReturn(
-                List.of(mock(Profesor.class), mock(Profesor.class), mock(Profesor.class)),
-                List.of(mock(Profesor.class), mock(Profesor.class))
-        );
-
-        given(this.profesorDAO.findById(anyInt())).willReturn(Optional.of(mock(Profesor.class)));
-
-        var studentsBeforeSave = this.profesorService.getAll();
-
-        profesorService.deleteProfessor(2);
-
-        var studentsAfterSave = this.profesorService.getAll();
-
-        verify(this.profesorDAO, times(1)).delete(2);
-        assertThat(studentsAfterSave.size()).isLessThan(studentsBeforeSave.size());
-    }
+//    @Test
+//    public void deleteStudent() throws Exception {
+//
+//        /*
+//        En la primera invocacion va a devolver una lista de 3 estudiantes. En la segunda una lista de 2
+//         */
+//        given(this.profesorDAO.findAll()).willReturn(
+//                List.of(mock(Profesor.class), mock(Profesor.class), mock(Profesor.class)),
+//                List.of(mock(Profesor.class), mock(Profesor.class))
+//        );
+//
+//        given(this.profesorDAO.findById(anyInt())).willReturn(Optional.of(mock(Profesor.class)));
+//
+//        var studentsBeforeSave = this.profesorService.getAll();
+//
+//        profesorService.deleteProfesor(2);
+//
+//        var studentsAfterSave = this.profesorService.getAll();
+//
+//        verify(this.profesorDAO, times(1)).delete(2);
+//        assertThat(studentsAfterSave.size()).isLessThan(studentsBeforeSave.size());
+//    }
 
     @Test
     public void updateStudent() throws Exception {
@@ -121,7 +121,7 @@ public class ProfesorServiceImplTest {
         var studentBefore = this.profesorService.getById(2);
 
         var karol = new Profesor(2, "Karol", "Jimenez", "MonteSierra");
-        profesorService.updateProfessor(karol);
+        profesorService.updateProfesor(karol);
 
         var studentAfter = this.profesorService.getById(2);
 

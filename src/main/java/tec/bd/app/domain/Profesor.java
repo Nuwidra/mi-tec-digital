@@ -1,14 +1,11 @@
 package tec.bd.app.domain;
 
-import java.util.List;
-
 public class Profesor implements Entity {
 
     private int id;
     private String nombre;
     private String apellido;
     private String ciudad;
-
 
     public Profesor(int id, String nombre, String apellido, String ciudad) {
         this.id = id;
@@ -17,7 +14,9 @@ public class Profesor implements Entity {
         this.ciudad = ciudad;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
     public void setId(int id) {
         this.id = id;

@@ -4,12 +4,12 @@ import tec.bd.app.database.set.Row;
 import tec.bd.app.database.set.RowAttribute;
 import tec.bd.app.database.set.SetDB;
 import tec.bd.app.domain.Profesor;
-import java.util.Collections;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProfesorDAOImpl extends GenericSetDAOImpl<Profesor, Integer> implements ProfesorDAO{
+public class ProfesorDAOImpl extends GenericSetDAOImpl<Profesor, Integer> implements ProfesorDAO {
 
     public ProfesorDAOImpl(SetDB setDB, Class<Profesor> clazz) {
         super(setDB, clazz);
@@ -17,35 +17,36 @@ public class ProfesorDAOImpl extends GenericSetDAOImpl<Profesor, Integer> implem
 
     @Override
     public List<Profesor> findByCity(String city) {
-        List<Profesor> listaPorCiudad = new ArrayList<>();
-        var profesor =this.table.stream().map(this::rowToEntity).collect(Collectors.toList());
-        for(Profesor actual : profesor){
-            if(actual.getApellido().equals(city) ){
-                listaPorCiudad.add(actual);
+        List<Profesor> listaProfesores = this.table.stream().map(this::rowToEntity).collect(Collectors.toList());
 
+        ArrayList<Profesor> profesoresPorCiudad = new ArrayList<>();
+
+        for (Profesor profesor : listaProfesores) {
+            if (profesor.getCiudad().equals(city)) {
+                profesoresPorCiudad.add(profesor);
             }
         }
-        return listaPorCiudad.stream().collect(Collectors.toList());
+
+        return profesoresPorCiudad;
     }
 
     @Override
     protected Profesor rowToEntity(Row row) {
-        // conversiones de Row a Profesor
         var id = row.intAttributeValue("id");
         var nombre = row.stringAttributeValue("nombre");
         var apellido = row.stringAttributeValue("apellido");
-        var ciudad = row.stringAttributeValue("cuidad");
+        var ciudad = row.stringAttributeValue("ciudad");
         return new Profesor(id, nombre, apellido, ciudad);
     }
 
     @Override
-    protected Row entityToRow(Profesor p) {
-
-        // conversiones de Estudiante a Row
+    protected Row entityToRow(Profesor e) {
         return new Row(new RowAttribute[] {
-                new RowAttribute("id", p.getId()),
-                new RowAttribute("nombre", p.getNombre()),
-                new RowAttribute("apellido", p.getApellido()),
-                new RowAttribute("ciudad", p.getCiudad()) });
+                new RowAttribute("id", e.getId()),
+                new RowAttribute("nombre", e.getNombre()),
+                new RowAttribute("apellido", e.getApellido()),
+                new RowAttribute("ciudad", e.getCiudad())
+        });
     }
+
 }

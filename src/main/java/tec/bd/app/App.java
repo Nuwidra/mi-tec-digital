@@ -507,20 +507,19 @@ public class App  {
     }
 
     public static void deleteProfessor(ProfesorService profesorService, int id) {
-        profesorService.deleteProfessor(id);
+        profesorService.deleteProfesor(id);
     }
 
     public static void updateProfessor(ProfesorService profesorService, int id, String nombre, String apellido, String ciudad) {
         var nuevoProfesor = new Profesor(id, nombre, apellido, ciudad);
-        profesorService.updateProfessor(nuevoProfesor);
+        profesorService.updateProfesor(nuevoProfesor);
     }
 
     public static void showByCity(ProfesorService profesorService, String ciudad){
-        List<Profesor> profesores = profesorService.getProfessorByCity(ciudad);
+        List<Profesor> profesores = profesorService.getProfesorByCity(ciudad);
 
         if(profesores.isEmpty()){
             System.out.println("La ciudad: " + ciudad + " no existe ");
-
         }
         else{
             System.out.println("\n\n");
@@ -529,7 +528,7 @@ public class App  {
             System.out.println("ID\t\tNombre\t\tApellido\tCiudad");
             System.out.println("-----------------------------------------------------------------------");
 
-            for (int i = 0; i< profesores.size(); i++){
+            for (int i = 0; i <= profesores.size(); i++){
                 Profesor actual = profesores.get(i);
                 System.out.println(actual.getId() + "\t\t" + actual.getNombre() + "\t\t" + actual.getApellido() + "\t\t" + actual.getCiudad());
             }

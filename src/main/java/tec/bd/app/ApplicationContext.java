@@ -99,25 +99,25 @@ public class ApplicationContext {
         // ---------------------------------------------------------------
         var AguilarId = new RowAttribute("id", 1);
         var AguilarNombre = new RowAttribute("nombre","Jorge");
-        var AguilarApellido = new RowAttribute("Apellido","Aguilar");
+        var AguilarApellido = new RowAttribute("apellido","Aguilar");
         var AguilarCuidad= new RowAttribute("ciudad","San Carlos");
         var AguilarRow = new Row(new RowAttribute[]{AguilarId, AguilarNombre, AguilarApellido, AguilarCuidad});
 
         var TorresID = new RowAttribute("id", 1);
         var TorresNombre = new RowAttribute("nombre","Mario");
-        var TorresApellido = new RowAttribute("Apellido","Torres");
+        var TorresApellido = new RowAttribute("apellido","Torres");
         var TorresAguilarCuidad= new RowAttribute("ciudad","Palmares");
         var TorresRow = new Row(new RowAttribute[]{TorresID, TorresNombre, TorresApellido, TorresAguilarCuidad});
 
         var FuentesID = new RowAttribute("id", 1);
         var FuentesNombre = new RowAttribute("nombre","Sara");
-        var FuentesApellido = new RowAttribute("Apellido","Fuentes");
+        var FuentesApellido = new RowAttribute("apellido","Fuentes");
         var FuentesAguilarCuidad= new RowAttribute("ciudad","Guanacaste");
         var FuentesRow = new Row(new RowAttribute[]{FuentesID, FuentesNombre, FuentesApellido, FuentesAguilarCuidad});
 
         var SalasID = new RowAttribute("id", 1);
         var SalasNombre = new RowAttribute("nombre","Jorge");
-        var SalasApellido = new RowAttribute("Apellido","Aguilar");
+        var SalasApellido = new RowAttribute("apellido","Aguilar");
         var SalasAguilarCuidad= new RowAttribute("ciudad","San Ramon");
         var SalasRow = new Row(new RowAttribute[]{SalasID, SalasNombre, SalasApellido, SalasAguilarCuidad});
 

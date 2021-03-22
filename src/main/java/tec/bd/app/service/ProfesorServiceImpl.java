@@ -21,47 +21,33 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
-    public Optional<Profesor> getById(int Id) {
-        if (Id > 0) {
-            return this.profesorDAO.findById(Id);
-        }
-        return Optional.empty();
+    public Optional<Profesor> getById(int id) {
+        return this.profesorDAO.findById(id);
     }
 
     @Override
     public void addNew(Profesor p) {
         Optional<Profesor> profesor = this.profesorDAO.findById(p.getId());
-        if (!profesor.isPresent()) {
+        if(!profesor.isPresent()) {
             this.profesorDAO.save(p);
         }
-
     }
 
     @Override
-    public Optional<Profesor> updateProfessor(Profesor p) {
-        if(this.profesorDAO.findById(p.getId()).isPresent()){
-            return this.profesorDAO.update(p);
-        }
-        return Optional.empty();
+    public Optional<Profesor> updateProfesor(Profesor p) {
+        return this.profesorDAO.update(p);
     }
 
     @Override
-    public void deleteProfessor(int id) {
-
-        if(this.profesorDAO.findById(id).isPresent()){
-            this.profesorDAO.delete(id);
-        }
-        else{
-            System.out.println("No existe");
-        }
+    public void deleteProfesor(int id) {
+        this.profesorDAO.delete(id);
     }
 
-    @Override
-    public List<Profesor> getProfessorByCity(String city) {
-        if (city != null) {
-            return this.profesorDAO.findByCity(city);
-        } else {
-            return null;
+
+    public List<Profesor> getProfesorByCity(String department) {
+        if (department.isEmpty() || this.profesorDAO.findByCity(department).isEmpty()) {
+            return Collections.emptyList();
         }
+        return this.profesorDAO.findByCity(department);
     }
 }

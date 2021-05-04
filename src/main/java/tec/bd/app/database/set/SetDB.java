@@ -15,12 +15,10 @@ public class SetDB {
     }
 
     public <T> Set<Row> getTableByClassName(Class<T> clazz) {
-
-        if (this.tables.containsKey(clazz)){
+        if (this.tables.containsKey(clazz)) {
             return this.tables.get(clazz);
-        }else {
-
-            return Collections.emptySet();
         }
+        return Collections.emptySet();
+
     }
 }

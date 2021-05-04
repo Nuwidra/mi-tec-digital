@@ -1,7 +1,8 @@
-package tec.bd.app.dao;
+package tec.bd.app.dao.set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tec.bd.app.dao.set.GenericSetDAOImpl;
 import tec.bd.app.database.set.Row;
 import tec.bd.app.database.set.RowAttribute;
 import tec.bd.app.database.set.SetDB;

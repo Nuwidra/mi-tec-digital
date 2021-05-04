@@ -9,15 +9,16 @@ public interface EstudianteService {
 
     List<Estudiante> getAll();
 
-    Optional<Estudiante> getById(int carne);
+    Optional<Estudiante> getById(Integer carne);
 
     void addNew(Estudiante e);
 
     Optional<Estudiante> updateStudent(Estudiante e);
 
-    void deleteStudent(int carne);
+    void deleteStudent(Integer carne);
+
+    List<Estudiante> getStudentsSortedByLastName();
 
     List<Estudiante> getStudentsByLastName(String lastName);
 
-    List<Estudiante> getStudentsSortedByLastName();
 }

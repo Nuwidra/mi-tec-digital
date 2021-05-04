@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ProfesorDAO extends GenericDAO<Profesor, Integer> {
 
-    List<Profesor> findByCity(String departamento);
-
+    // un nuevo metodo para buscar por ciudad
+    List<Profesor> findByCity(String ciudad);
 }

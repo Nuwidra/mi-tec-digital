@@ -20,14 +20,13 @@ public class EstudianteServiceImpl implements EstudianteService {
     }
 
     @Override
-    public Optional<Estudiante> getById(int carne) {
+    public Optional<Estudiante> getById(Integer carne) {
 
         //TODO: validar el carne > 0. Si no cumple con eso se devuelve Optional.empty()
-        if(carne < 0){
-            return Optional.empty();
-        }else{
+        if(carne > 0) {
             return this.estudianteDAO.findById(carne);
         }
+        return Optional.empty();
     }
 
     public void addNew(Estudiante e) {
@@ -38,29 +37,28 @@ public class EstudianteServiceImpl implements EstudianteService {
     }
 
     public Optional<Estudiante> updateStudent(Estudiante e) {
-        if(this.getById(e.getCarne()).isPresent()){
+        //TODO: validar que el carne exista en la BD. Si existe se actualiza
+        if(this.getById(e.getCarne()).isPresent()) {
             return this.estudianteDAO.update(e);
         }
         return Optional.empty();
     }
 
-    public void deleteStudent(int carne) {
+    public void deleteStudent(Integer carne) {
+        //TODO: validar que el carne exista en la BD. Si existe se borra
         if(this.estudianteDAO.findById(carne).isPresent()){
             this.estudianteDAO.delete(carne);
         }
     }
 
-    public List<Estudiante> getStudentsSortedByLastName(String SortByLastName) {
-        if(SortByLastName != null){
-            return this.estudianteDAO.findAllSortByLastName();
-        }
-        else{
-            return null;
-        }
+    public List<Estudiante> getStudentsSortedByLastName() {
+        return this.estudianteDAO.findAllSortByLastName();
     }
 
     @Override
     public List<Estudiante> getStudentsByLastName(String lastName) {
+        //TODO: implementarlo
+        //validar que el lastName no sea nulo
         if(lastName != null){
             return this.estudianteDAO.findByLastName(lastName);
         }
@@ -68,11 +66,5 @@ public class EstudianteServiceImpl implements EstudianteService {
             return null;
         }
     }
-
-    @Override
-    public List<Estudiante> getStudentsSortedByLastName() {
-        return null;
-    }
-
 
 }

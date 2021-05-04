@@ -9,15 +9,15 @@ public interface CursoService {
 
     List<Curso> getAll();
 
-    Optional<Curso> getById(int Id);
+    Optional<Curso> getById(Integer id);
 
     void addNew(Curso c);
 
     Optional<Curso> updateCourse(Curso c);
 
-    void deleteCourse(int id);
+    void deleteCourse(Integer id);
 
-    List<Curso> findByDepartment(String department);
+    List<Curso> getByDepartment(String department);
 
 
 }

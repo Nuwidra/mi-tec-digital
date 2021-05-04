@@ -3,16 +3,14 @@ package tec.bd.app.service;
 import tec.bd.app.dao.CursoDAO;
 import tec.bd.app.domain.Curso;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class CursoServiceImpl implements CursoService{
+public class CursoServiceImpl implements CursoService {
 
     private CursoDAO cursoDAO;
 
-
-    public CursoServiceImpl(CursoDAO cursoDAO){
+    public CursoServiceImpl(CursoDAO cursoDAO) {
         this.cursoDAO = cursoDAO;
     }
 
@@ -23,8 +21,7 @@ public class CursoServiceImpl implements CursoService{
     }
 
     @Override
-    public Optional<Curso> getById(int id) {
-
+    public Optional<Curso> getById(Integer id) {
         if (id<0){
             return Optional.empty();
         }
@@ -41,16 +38,14 @@ public class CursoServiceImpl implements CursoService{
 
     @Override
     public Optional<Curso> updateCourse(Curso c) {
-
         if(this.cursoDAO.findById(c.getId()).isPresent()) {
             return this.cursoDAO.update(c);
         }
         return Optional.empty();
-
     }
 
     @Override
-    public void deleteCourse(int id) {
+    public void deleteCourse(Integer id) {
         if(this.cursoDAO.findById(id).isPresent()) {
             this.cursoDAO.delete(id);
         }
@@ -60,7 +55,9 @@ public class CursoServiceImpl implements CursoService{
     }
 
     @Override
-    public List<Curso> findByDepartment(String department) {
+    public List<Curso> getByDepartment(String department) {
+        // validar si department es nulo o vacio. Si NO es nulo o vacio se va a poder llamar al DAO
+        // sino, se retorna una lista vacia
 
         if (department != null) {
             return this.cursoDAO.findByDepartment(department);

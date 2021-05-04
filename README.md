@@ -1,4 +1,6 @@
 Mi-TEC-Digital
 ==============
-Nombre del estudiante: Jonathan Quesada Salas    /    Carnet: 2020023583
 
+[![Java CI with Maven](https://github.com/martinicr/mi-tec-digital/actions/workflows/maven.yml/badge.svg)](https://github.com/martinicr/mi-tec-digital/actions/workflows/maven.yml)
+
+Aplicación Demo para gestionar Estudiantes, Profesores y Cursos.

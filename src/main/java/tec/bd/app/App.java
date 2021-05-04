@@ -3,26 +3,43 @@ package tec.bd.app;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tec.bd.app.domain.Curso;
 import tec.bd.app.domain.Estudiante;
+import tec.bd.app.domain.Profesor;
 import tec.bd.app.service.CursoService;
 import tec.bd.app.service.EstudianteService;
-
-import java.util.Optional;
 import tec.bd.app.service.ProfesorService;
-import tec.bd.app.domain.Curso;
-import java.util.List;
-import tec.bd.app.domain.Profesor;
+
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
+
+
+
 public class App  {
 
     private static final Logger LOG = LoggerFactory.getLogger(App.class);
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 
     public static void main(String[] args) {
 
         ApplicationContext applicationContext = ApplicationContext.init();
-        var estudianteService = applicationContext.getEstudianteServiceSet();
+        var estudianteService = applicationContext.getEstudianteService();
         var cursoService = applicationContext.getCursoService();
         var profesorService = applicationContext.getProfesorService();
+
+
+//        var estudianteController = new EstudianteController(estudianteService);
+//        var cursoController = new CursoController(cursoService);
+
+//        get("/estudiante", estudianteController::estudiantes);
+//        get("/estudiante/:carnet", estudianteController::estudiante);
+//        get("/cursos", cursoController::cursos);
+
         Options options = new Options();
 
         //------------------------------------------------------------------------
@@ -37,8 +54,8 @@ public class App  {
         options.addOption(Option.builder("ec")
                 .longOpt("estudiante-nuevo")
                 .hasArg(true)
-                .numberOfArgs(4)
-                .desc("Agregar Estudiante: carne, nombre y apellido son requeridos")
+                .numberOfArgs(5)
+                .desc("Agregar Estudiante: carne, nombre, apellido, fecha de nacimiento y total creditos son requeridos")
                 .required(false)
                 .build());
 
@@ -57,8 +74,8 @@ public class App  {
 
         options.addOption(Option.builder("eu")
                 .longOpt("estudiante-actualizar")
-                .numberOfArgs(4)
-                .desc("Actualizar estudiante: carne, nombre y apellido son requeridos")
+                .numberOfArgs(5)
+                .desc("Actualizar estudiante: carne, nombre, apellido, fecha de nacimiento y total creditos son requeridos")
                 .required(false)
                 .build());
 
@@ -194,7 +211,8 @@ public class App  {
                         Integer.parseInt(newStudentValues[0]),
                         newStudentValues[1],
                         newStudentValues[2],
-                        Integer.parseInt(newStudentValues[3]));
+                        dateFromString(newStudentValues[3]),
+                        Integer.parseInt(newStudentValues[4]));
                 showAllStudents(estudianteService);
             } else if(cmd.hasOption("ed")) {
                 // Borrar/remover un estudiante
@@ -208,34 +226,35 @@ public class App  {
                         Integer.parseInt(newStudentValues[0]),
                         newStudentValues[1],
                         newStudentValues[2],
-                        Integer.parseInt(newStudentValues[3]));
+                        dateFromString(newStudentValues[3]),
+                        Integer.parseInt(newStudentValues[4]));
                 showAllStudents(estudianteService);
 
             } else if(cmd.hasOption("erln")) {
                 // Ver todos los estudiantes ordenados por apellido
                 System.out.println("IMPLEMENTAR: Ver todos los estudiantes ordenados por apellido");
-                showSortedByLastName(estudianteService);
-
+                showAllStudentsSortedByLastname(estudianteService);
 
             } else if(cmd.hasOption("eln")) {
                 // Ejemplo: -eln Rojas
                 // Ver todos los estudiantes con un apellido en particular
                 System.out.println("IMPLEMENTAR: Ver todos los estudiantes con un apellido en particular");
-                var LastName = cmd.getOptionValue("eln");
-                showByLastName(estudianteService, LastName);
+                var apellido = cmd.getOptionValue("eln");
+                showAllStudentsByLastname(estudianteService,apellido);
+
             //------------------------------------------------------------------------
             // Opciones para curso
 
             } else if(cmd.hasOption("cr")) {
                 // Mostrar todos los estudiantes
-                System.out.println("IMPLEMENTAR: Mostrar todos los cursos");
+//                System.out.println("IMPLEMENTAR: Mostrar todos los cursos");
                 showAllCourses(cursoService);
 
             } else if(cmd.hasOption("cid")) {
                 // Mostrar un curso por id
                 System.out.println("IMPLEMENTAR: Mostrar curso por id");
-                var id = cmd.getOptionValue("eid");
-                showCoursesInfo(cursoService, Integer.parseInt(id));
+                var id = cmd.getOptionValue("cid");
+                showCourseInfo(cursoService, Integer.parseInt(id));
 
             } else if(cmd.hasOption("cc")) {
                 // Crear/Agregar un nuevo curso
@@ -244,8 +263,8 @@ public class App  {
                 addNewCourse(cursoService,
                         Integer.parseInt(newCurseValues[0]),
                         newCurseValues[1],
-                        newCurseValues[2],
-                        Integer.parseInt(newCurseValues[3]));
+                        Integer.parseInt(newCurseValues[2]),
+                        (newCurseValues[3]));
                 showAllCourses(cursoService);
 
             } else if(cmd.hasOption("cd")) {
@@ -262,15 +281,15 @@ public class App  {
                 updateCourse(cursoService,
                         Integer.parseInt(newCurseValues[0]),
                         newCurseValues[1],
-                        newCurseValues[2],
-                        Integer.parseInt(newCurseValues[3]));
+                        Integer.parseInt(newCurseValues[2]),
+                        (newCurseValues[3]));
                 showAllCourses(cursoService);
 
             } else if(cmd.hasOption("crd")) {
                 // Ver cursos por departamento
                 System.out.println("IMPLEMENTAR: ver cursos por departamento");
                 var departamento = cmd.getOptionValue("crd");
-                showByDepartament(cursoService, departamento);
+                showCoursesByDepartment(cursoService,departamento);
 
             //------------------------------------------------------------------------
             // Opciones para profesor
@@ -289,37 +308,38 @@ public class App  {
             } else if(cmd.hasOption("pc")) {
                 // Crear/Agregar un nuevo profesor
                 System.out.println("IMPLEMENTAR: Crear/Agregar un nuevo profesor");
-                var newProfessorValues = cmd.getOptionValues("pc");
+                var newProffesorValues = cmd.getOptionValues("pc");
                 addNewProfessor(profesorService,
-                        Integer.parseInt(newProfessorValues[0]),
-                        newProfessorValues[1],
-                        newProfessorValues[2],
-                        newProfessorValues[3]);
+                        Integer.parseInt(newProffesorValues[0]),
+                        newProffesorValues[1],
+                        newProffesorValues[2],
+                        newProffesorValues[3]);
                 showAllProfessors(profesorService);
 
             } else if(cmd.hasOption("pd")) {
                 // Borrar/remover un profesor
                 System.out.println("IMPLEMENTAR: Borrar/remover un profesor");
-                var id = cmd.getOptionValue("pd");
-                deleteProfessor(profesorService, Integer.parseInt(id));
+                var indice  = cmd.getOptionValue("pd");
+                deleteProfessor(profesorService, Integer.parseInt(indice));
                 showAllProfessors(profesorService);
 
             } else if(cmd.hasOption("pu")) {
                 // Actualizar datos de un profesor
                 System.out.println("IMPLEMENTAR: Actualizar datos de un profesor");
-                var newProfessorValues = cmd.getOptionValues("pu");
+                var newProffesorValues = cmd.getOptionValues("pu");
                 updateProfessor(profesorService,
-                        Integer.parseInt(newProfessorValues[0]),
-                        newProfessorValues[1],
-                        newProfessorValues[2],
-                        newProfessorValues[3]);
+                        Integer.parseInt(newProffesorValues[0]),
+                        newProffesorValues[1],
+                        newProffesorValues[2],
+                        newProffesorValues[3]);
                 showAllProfessors(profesorService);
 
             } else if(cmd.hasOption("prc")) {
                 // Ver profesores por ciudad
                 System.out.println("IMPLEMENTAR: ver profesores por ciudad");
                 var ciudad = cmd.getOptionValue("prc");
-                showByCity(profesorService, ciudad);
+                showProfessorByCity(profesorService,ciudad);
+
 
             //------------------------------------------------------------------------
 
@@ -339,16 +359,19 @@ public class App  {
             System.exit(1);
         }
     }
-    // Estudiante //
+
+    // ------------------------------------------------------------------
+    //                            ESTUDIANTES
+    // ------------------------------------------------------------------
     public static void showAllStudents(EstudianteService estudianteService) {
 
         System.out.println("\n\n");
         System.out.println("Lista de Estudiantes");
         System.out.println("-----------------------------------------------------------------------");
-        System.out.println("Carne\t\tNombre\t\tApellido\tEdad");
+        System.out.println("Carne\t\tNombre\t\tApellido\tFecha Nacimiento\tCreditos");
         System.out.println("-----------------------------------------------------------------------");
         for(Estudiante estudiante : estudianteService.getAll()) {
-            System.out.println(estudiante.getCarne() + "\t\t" + estudiante.getNombre() + "\t\t" +estudiante.getApellido() + "\t\t"+ estudiante.getEdad());
+            System.out.println(estudiante.getCarne() + "\t\t" + estudiante.getNombre() + "\t\t" +estudiante.getApellido() + "\t\t"+ estudiante.getFechaNacimiento() + "\t\t" + estudiante.getTotalCreditos());
         }
         System.out.println("-----------------------------------------------------------------------");
         System.out.println("\n\n");
@@ -364,84 +387,81 @@ public class App  {
         }
     }
 
-    public static void addNewStudent(EstudianteService estudianteService, int carne, String nombre, String apellido, int edad) {
-        var nuevoEstudiante = new Estudiante(carne,nombre, apellido, edad);
+    public static void addNewStudent(EstudianteService estudianteService, int id, String nombre, String apellido, Date fechaNacimiento, int totalCreditos) {
+        var nuevoEstudiante = new Estudiante(id, nombre, apellido, fechaNacimiento, totalCreditos);
         estudianteService.addNew(nuevoEstudiante);
     }
+
 
     public static void deleteStudent(EstudianteService estudianteService, int carne) {
         estudianteService.deleteStudent(carne);
     }
 
-    public static void updateStudent(EstudianteService estudianteService, int carne, String nombre, String apellido, int edad) {
-        var nuevoEstudiante = new Estudiante(carne,nombre, apellido, edad);
+    public static void updateStudent(EstudianteService estudianteService, int id, String nombre, String apellido, Date fechaNacimiento, int totalCreditos) {
+        var nuevoEstudiante = new Estudiante(id, nombre, apellido, fechaNacimiento, totalCreditos);
         estudianteService.updateStudent(nuevoEstudiante);
     }
 
-    public static void showByLastName(EstudianteService estudianteService, String apellido){
-        List<Estudiante> estudiantes = estudianteService.getStudentsByLastName(apellido);
-        if(!estudiantes.isEmpty()){
-            System.out.println("\n\n");
-            System.out.println("Lista de Estudiantes");
-            System.out.println("-----------------------------------------------------------------------");
-            System.out.println("Carne\t\tNombre\t\tApellido\tEdad");
-            System.out.println("-----------------------------------------------------------------------");
-            for (int i = 0; i< estudiantes.size(); i++){
-                Estudiante actual = estudiantes.get(i);
-                System.out.println(actual.getCarne() + "\t\t" + actual.getNombre() + "\t\t" +actual.getApellido() + "\t\t"+ actual.getEdad());
-            }
-            System.out.println("-----------------------------------------------------------------------");
+    public static void showAllStudentsByLastname(EstudianteService estudianteService,String apellido) {
+        var estudiantes = estudianteService.getStudentsByLastName(apellido);
+        System.out.println("\n\n");
+        System.out.println("Lista de Estudiantes");
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("ID\t\tNombre\t\tApellido\t\tEdad");
+        System.out.println("-----------------------------------------------------------------------");
+        for(Estudiante estudiante : estudiantes) {
+            System.out.println(estudiante.getId() + "\t\t" + estudiante.getNombre() + "\t\t" +estudiante.getApellido());
         }
-        else{
-            System.out.println("Estudiantes con apellido: " + apellido + " no existen");
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("\n\n");
+    }
+    public static void showAllStudentsSortedByLastname(EstudianteService estudianteService){
+        var estudiantes = estudianteService.getStudentsSortedByLastName();
+
+        System.out.println("\n\n");
+        System.out.println("Lista de Estudiantes");
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("ID\t\tNombre\t\tApellido");
+        System.out.println("-----------------------------------------------------------------------");
+        for(Estudiante estudiante : estudiantes) {
+            System.out.println(estudiante.getId() + "\t\t" + estudiante.getNombre() + "\t\t" +estudiante.getApellido());
         }
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("\n\n");
     }
 
-    public static void showSortedByLastName(EstudianteService estudianteService){
-        List<Estudiante> estudiantes = estudianteService.getStudentsSortedByLastName();
-        if(!estudiantes.isEmpty()){
-            System.out.println("\n\n");
-            System.out.println("Lista de Estudiantes");
-            System.out.println("-----------------------------------------------------------------------");
-            System.out.println("Carne\t\tNombre\t\tApellido\tEdad");
-            System.out.println("-----------------------------------------------------------------------");
-            for (int i = 0; i< estudiantes.size(); i++){
-                Estudiante actual = estudiantes.get(i);
-                System.out.println(actual.getCarne() + "\t\t" + actual.getNombre() + "\t\t" +actual.getApellido() + "\t\t"+ actual.getEdad());
-            }
-            System.out.println("-----------------------------------------------------------------------");
-        }
-        else{
-            System.out.println("No hay estudiantes");
-        }
-    }
-    // CURSO //
+    // ----------------------------------------------------------------
+    //                            CURSOS
+    // ----------------------------------------------------------------
     public static void showAllCourses(CursoService cursoService) {
 
         System.out.println("\n\n");
-        System.out.println("Lista de cursos");
+        System.out.println("Lista de Cursos");
         System.out.println("-----------------------------------------------------------------------");
-        System.out.println("ID\t\tNombre\t\tDepartamento\tCreditos");
+        System.out.println("ID\t\tNombre\t\tCréditos\t\tDepartamento");
         System.out.println("-----------------------------------------------------------------------");
         for(Curso curso : cursoService.getAll()) {
-            System.out.println(curso.getId() + "\t\t" + curso.getNombre() + "\t\t" +curso.getDepartamento() + "\t\t"+ curso.getCreditos());
+            System.out.println(curso.getId() + "\t\t" + curso.getNombre() + "\t\t" + curso.getCreditos() + "\t\t"+ curso.getDepartamento());
         }
         System.out.println("-----------------------------------------------------------------------");
         System.out.println("\n\n");
     }
 
-    public static void showCoursesInfo(CursoService cursoService, int id) {
+    public static void showCourseInfo(CursoService cursoService, int id) {
         Optional<Curso> curso = cursoService.getById(id);
+        Curso mi_curso = curso.get();
         if(curso.isPresent()) {
-            System.out.println("Curso: " + curso.get().getNombre());
-            System.out.println("ID: " + curso.get().getId());
+            System.out.println("-----------------------------------------------------------------------");
+            System.out.println("ID\t\tNombre\t\tCréditos\t\tDepartamento");
+            System.out.println("-----------------------------------------------------------------------");
+            System.out.println(mi_curso.getId() + "\t\t" + mi_curso.getNombre() + "\t\t" + mi_curso.getCreditos() + "\t\t"+ mi_curso.getDepartamento());
         } else {
             System.out.println("Curso con ID: " + id + " no existe");
         }
     }
 
-    public static void addNewCourse(CursoService cursoService, int id, String nombre, String departamento, int creditos) {
-        var nuevoCurso = new Curso(id ,nombre, departamento, creditos);
+    public static void addNewCourse(CursoService cursoService, int id, String nombre, int creditos, String departamento) {
+        var nuevoCurso = new Curso(id, nombre, creditos, departamento);
         cursoService.addNew(nuevoCurso);
     }
 
@@ -449,90 +469,93 @@ public class App  {
         cursoService.deleteCourse(id);
     }
 
-    public static void updateCourse(CursoService cursoService, int id, String nombre, String departamento, int creditos) {
-        var nuevoCurso = new Curso(id, nombre, departamento, creditos);
+    public static void updateCourse(CursoService cursoService, int id, String nombre, int creditos, String departamento) {
+        var nuevoCurso = new Curso(id, nombre, creditos, departamento);
         cursoService.updateCourse(nuevoCurso);
     }
 
-    public static void showByDepartament(CursoService cursoService, String departamento){
-        List<Curso> cursosDepartamento = cursoService.findByDepartment(departamento);
-
-        if(!cursosDepartamento.isEmpty()){
-            System.out.println("\n\n");
-            System.out.println("Lista de Cursos");
-            System.out.println("-----------------------------------------------------------------------");
-            System.out.println("ID\t\tNombre\t\tDepartamento\tCreditos");
-            System.out.println("-----------------------------------------------------------------------");
-
-            for (int i = 0; i< cursosDepartamento.size(); i++){
-                Curso actual = cursosDepartamento.get(i);
-                System.out.println(actual.getId() + "\t\t" + actual.getNombre() + "\t\t" +actual.getDepartamento() + "\t\t"+ actual.getCreditos());
-            }
-            System.out.println("-----------------------------------------------------------------------");
+    public static void showCoursesByDepartment(CursoService cursoService, String departamento) {
+        var cursos = cursoService.getByDepartment(departamento);
+        System.out.println("\n\n");
+        System.out.println("Lista de Cursos");
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("ID\t\tNombre\t\tCréditos\t\tDepartamento");
+        System.out.println("-----------------------------------------------------------------------");
+        for(Curso curso : cursos) {
+            System.out.println(curso.getId() + "\t\t" + curso.getNombre() + "\t\t" + curso.getCreditos() + "\t\t"+ curso.getDepartamento());
         }
-        else{
-            System.out.println("El departamento: " + departamento + " no existente");
-            System.out.println("\n\n");
-        }
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("\n\n");
     }
 
-    // Profesor //
+    // ----------------------------------------------------------------
+    //                            PROFESORES
+    // ----------------------------------------------------------------
     public static void showAllProfessors(ProfesorService profesorService) {
 
         System.out.println("\n\n");
-        System.out.println("Lista de profesores");
+        System.out.println("Lista de Profesores");
         System.out.println("-----------------------------------------------------------------------");
-        System.out.println("ID\t\tNombre\t\tApellido\tCiudad");
+        System.out.println("ID\t\tNombre\t\t\tApellido\t\tCiudad");
         System.out.println("-----------------------------------------------------------------------");
-        for (Profesor profesor : profesorService.getAll()) {
-            System.out.println(profesor.getId() + "\t\t" + profesor.getNombre() + "\t\t" + profesor.getApellido() + "\t\t" + profesor.getCiudad());
+        for(Profesor profesor : profesorService.getAll()) {
+            System.out.println(profesor.getId() + "\t\t" + profesor.getNombre() + "\t\t" + profesor.getApellido() + "\t\t"+ profesor.getCiudad());
         }
         System.out.println("-----------------------------------------------------------------------");
         System.out.println("\n\n");
     }
 
     public static void showProfessorInfo(ProfesorService profesorService, int id) {
-        Optional<Profesor> profesor = profesorService.getById(id);
-        if(profesor.isPresent()) {
-            System.out.println("Profesor: " + profesor.get().getNombre() + " " + profesor.get().getApellido());
-            System.out.println("Id: " + profesor.get().getId());
+        Optional<Profesor> mi_profesor = profesorService.findById(id);
+        Profesor profesor = mi_profesor.get();
+        if(mi_profesor.isPresent()) {
+            System.out.println("-----------------------------------------------------------------------");
+            System.out.println("ID\t\tNombre\t\t\tApellido\t\tCiudad");
+            System.out.println("-----------------------------------------------------------------------");
+            System.out.println(profesor.getId() + "\t\t" + profesor.getNombre() + "\t\t" + profesor.getApellido() + "\t\t"+ profesor.getCiudad());
         } else {
-            System.out.println("El profesor con el id de: " + id + " no existe");
+            System.out.println("Curso con ID: " + id + " no existe");
         }
     }
 
-    public static void addNewProfessor(ProfesorService profesorService, int carne, String nombre, String apellido, String ciudad) {
-        var nuevoProfesor = new Profesor(carne,nombre, apellido, ciudad);
+    public static void addNewProfessor(ProfesorService profesorService, int id, String nombre, String apellido, String ciudad) {
+        var nuevoProfesor = new Profesor(id, nombre, apellido, ciudad);
         profesorService.addNew(nuevoProfesor);
     }
 
     public static void deleteProfessor(ProfesorService profesorService, int id) {
-        profesorService.deleteProfesor(id);
+        profesorService.deleteProfessor(id);
     }
 
     public static void updateProfessor(ProfesorService profesorService, int id, String nombre, String apellido, String ciudad) {
         var nuevoProfesor = new Profesor(id, nombre, apellido, ciudad);
-        profesorService.updateProfesor(nuevoProfesor);
+        profesorService.updateProfessor(nuevoProfesor);
     }
 
-    public static void showByCity(ProfesorService profesorService, String ciudad){
-        List<Profesor> profesores = profesorService.getProfesorByCity(ciudad);
+    public static void showProfessorByCity(ProfesorService profesorService, String ciudad) {
 
-        if(profesores.isEmpty()){
-            System.out.println("La ciudad: " + ciudad + " no existe ");
+        var profes = profesorService.getProfesorByCity(ciudad);
+        System.out.println("\n\n");
+        System.out.println("Lista de Profesores");
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("ID\t\tNombre\t\tApellidos\t\tCiudad");
+        System.out.println("-----------------------------------------------------------------------");
+        for(Profesor profesor : profes) {
+            System.out.println(profesor.getId() + "\t\t" + profesor.getNombre() + "\t\t" + profesor.getApellido() + "\t\t"+ profesor.getCiudad());
         }
-        else{
-            System.out.println("\n\n");
-            System.out.println("Lista de profesores");
-            System.out.println("-----------------------------------------------------------------------");
-            System.out.println("ID\t\tNombre\t\tApellido\tCiudad");
-            System.out.println("-----------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("\n\n");
+    }
 
-            for (int i = 0; i <= profesores.size(); i++){
-                Profesor actual = profesores.get(i);
-                System.out.println(actual.getId() + "\t\t" + actual.getNombre() + "\t\t" + actual.getApellido() + "\t\t" + actual.getCiudad());
-            }
-            System.out.println("-----------------------------------------------------------------------");
+    // ---------------------------------------------------------------------
+    //                          Una conversión útil
+    // ---------------------------------------------------------------------
+    private static Date dateFromString(String fecha) {
+        Objects.requireNonNull(fecha, "Debe de proporcionar una fecha");
+        try {
+            return DATE_FORMAT.parse(fecha);
+        } catch (java.text.ParseException e) {
+            throw new RuntimeException("La fecha proporcionada es invalida", e);
         }
     }
 }

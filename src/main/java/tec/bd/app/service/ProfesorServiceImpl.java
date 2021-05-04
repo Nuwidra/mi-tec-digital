@@ -2,14 +2,13 @@ package tec.bd.app.service;
 
 import tec.bd.app.dao.ProfesorDAO;
 import tec.bd.app.domain.Profesor;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class ProfesorServiceImpl implements ProfesorService {
 
-    private ProfesorDAO profesorDAO;
+    private final ProfesorDAO profesorDAO;
 
     public ProfesorServiceImpl(ProfesorDAO profesorDAO) {
         this.profesorDAO = profesorDAO;
@@ -21,28 +20,35 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
-    public Optional<Profesor> getById(int id) {
-        return this.profesorDAO.findById(id);
+    public Optional<Profesor> findById(Integer id) {
+        if (id > 0){
+            return this.profesorDAO.findById(id);
+        }
+        return Optional.empty();
     }
 
     @Override
     public void addNew(Profesor p) {
         Optional<Profesor> profesor = this.profesorDAO.findById(p.getId());
         if(!profesor.isPresent()) {
-            this.profesorDAO.save(p);
+            this.profesorDAO.save((Profesor) p);
         }
     }
 
     @Override
-    public Optional<Profesor> updateProfesor(Profesor p) {
-        return this.profesorDAO.update(p);
+    public Optional<Profesor> updateProfessor(Profesor p) {
+        if(p.getId() == this.profesorDAO.findById(p.getId()).get().getId()){
+            return this.profesorDAO.update(p);
+        }
+        else{
+            return null;
+        }
     }
 
     @Override
-    public void deleteProfesor(int id) {
+    public void deleteProfessor(Integer id) {
         this.profesorDAO.delete(id);
     }
-
 
     public List<Profesor> getProfesorByCity(String department) {
         if (department.isEmpty() || this.profesorDAO.findByCity(department).isEmpty()) {

@@ -9,14 +9,15 @@ public interface ProfesorService {
 
     List<Profesor> getAll();
 
-    Optional<Profesor> getById(int id);
+    Optional<Profesor> findById(Integer id);
 
     void addNew(Profesor p);
 
-    Optional<Profesor> updateProfesor(Profesor p);
+    Optional<Profesor> updateProfessor(Profesor p);
 
-    void deleteProfesor(int id);
+    void deleteProfessor(Integer id);
 
+    // nuevo metodo para ver los profesores por ciudad
     List<Profesor> getProfesorByCity(String department);
 
 }

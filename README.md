@@ -11,6 +11,7 @@ mvn exec:java -Dexec.args="-cc 1 Genetica Biologia 4", para agregar un nuevo cur
 
 mvn exec:java -Dexec.args="-cu 1 Generica Biologia 3", para actualizar un curso existente
 
+
 Por favor usar:
 
 mvn exec:java -Dexec.args="-cc 1 Genetica 4 Biologia", para agregar un nuevo curso

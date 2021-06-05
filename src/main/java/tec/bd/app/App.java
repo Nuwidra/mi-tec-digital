@@ -399,6 +399,7 @@ public class App  {
 
     public static void updateStudent(EstudianteService estudianteService, int id, String nombre, String apellido, Date fechaNacimiento, int totalCreditos) {
         var nuevoEstudiante = new Estudiante(id, nombre, apellido, fechaNacimiento, totalCreditos);
+        System.out.println("1 App");
         estudianteService.updateStudent(nuevoEstudiante);
     }
 

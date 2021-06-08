@@ -122,7 +122,9 @@ drop procedure if exists selecionar_todos_estudiantes;
 delimiter $$
 create procedure selecionar_todos_estudiantes()
 begin
+	start transaction;
 	select id, nombre, apellido, fecha_nacimiento, total_creditos from estudiante;
+    commit;
 end
 $$
 delimiter ;
@@ -135,7 +137,9 @@ drop procedure if exists encontrar_estudiante_por_id;
 delimiter $$
 create procedure encontrar_estudiante_por_id(in id_estudiante int)
 begin
+	start transaction;
 	select id, nombre, apellido, fecha_nacimiento, total_creditos from estudiante where id = id_estudiante;
+    commit;
 end
 $$
 delimiter ;
@@ -227,7 +231,9 @@ drop procedure if exists seleccionar_todos_cursos;
 delimiter $$
 create procedure seleccionar_todos_cursos()
 begin
+	start transaction;
 	select id, nombre, creditos, departamento from curso;
+    commit;
 end
 $$
 delimiter ;
@@ -300,7 +306,9 @@ drop procedure if exists find_by_department_course;
 delimiter $$
 create procedure find_by_department_course(in departamento_curso text)
 begin
+	start transaction;
     select id, nombre, creditos, departamento from curso where departamento = departamento_curso;
+    commit;
 end
 $$
 delimiter ;
@@ -317,7 +325,9 @@ drop procedure if exists seleccionar_todos_profesores;
 delimiter $$
 create procedure seleccionar_todos_profesores()
 begin
+	start transaction;
 	select id, nombre, apellido, ciudad from profesor;
+    commit;
 end
 $$
 delimiter ;
@@ -330,7 +340,9 @@ drop procedure if exists encontrar_profesor_por_id;
 delimiter $$
 create procedure encontrar_profesor_por_id(in profesor_id int)
 begin
+	start transaction;
 	select id, nombre, apellido, ciudad from profesor where id = profesor_id;
+    commit;
 end
 $$
 delimiter ;
@@ -388,17 +400,19 @@ drop procedure if exists find_by_city_professor;
 delimiter $$
 create procedure find_by_city_professor(in ciudad_profesor text)
 begin
+	start transaction;
     select id, nombre, apellido, ciudad from profesor where ciudad = ciudad_profesor;
+    commit;
 end
 $$
 delimiter ;
 -- call find_by_city_professor('Palmares');
 
--- ===================================================================================
+-- ===================================CREAR EL USUARIO===================================
 use universidad;
 drop user if exists 'universidad_user';
 create user 'universidad_user' identified by 'universidad_pass';
 grant insert, delete, update on universidad.* to 'universidad_user';
 grant execute on universidad.* to 'universidad_user';
 flush privileges;
--- ===================================================================================
+-- ======================================================================================

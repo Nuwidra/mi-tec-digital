@@ -26,3 +26,9 @@ El CRUD de profesores no está funcionando bien.
 ## Revisión de tarea 4
 
 Nota 10
+
+## Revisión de proyecto 2
+
+- Me parece que su archivo `universidad.sql` no fue generado por medio de `mysqldump`. Todo lo demás se ve bien.
+
+Nota: 9
